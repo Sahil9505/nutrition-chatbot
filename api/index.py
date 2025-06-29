@@ -600,8 +600,10 @@ def chat():
         return jsonify({'response': f'Sorry, an error occurred: {str(e)}'}), 500
 
     # Preload food terms 
+    # ...all your Flask routes and functions...
+
+# Preload food terms at module level (outside any function or route)
 if SPOONACULAR_API_KEY:
-        preload_common_food_terms()
-    else:
-        print("Spoonacular API key not found - food term detection will be limited")
-    
+    preload_common_food_terms()
+else:
+    print("Spoonacular API key not found - food term detection will be limited")
