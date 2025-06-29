@@ -524,11 +524,6 @@ def preload_common_food_terms():
     print(f"Preloaded {len(COMMON_FOOD_TERMS)} common food terms")
 
 # Create Flask app
-app = Flask(
-    __name__,
-    static_folder=os.path.join(os.path.dirname(__file__), '..', 'static'),
-    template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates')
-)
 
 # Enable CORS for all routes
 @app.after_request
@@ -600,7 +595,7 @@ def chat():
         return jsonify({'response': f'Sorry, an error occurred: {str(e)}'}), 500
 
     # Preload food terms 
-if SPOONACULAR_API_KEY:
+    if SPOONACULAR_API_KEY:
         preload_common_food_terms()
     else:
         print("Spoonacular API key not found - food term detection will be limited")
