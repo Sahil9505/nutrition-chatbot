@@ -600,7 +600,7 @@ def chat():
         return jsonify({'response': f'Sorry, an error occurred: {str(e)}'}), 500
 
     # Preload food terms 
-    if SPOONACULAR_API_KEY:
+if SPOONACULAR_API_KEY:
         preload_common_food_terms()
     else:
         print("Spoonacular API key not found - food term detection will be limited")
