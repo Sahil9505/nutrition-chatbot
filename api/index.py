@@ -3,9 +3,8 @@ import google.generativeai as genai
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, url_for
-import traceback
-
-app = Flask(__name__, static_url_path='/static')
+from flask import Flask
+from your_existing_module import app
 
 # Load environment variables
 load_dotenv()
@@ -527,11 +526,7 @@ def preload_common_food_terms():
     print(f"Preloaded {len(COMMON_FOOD_TERMS)} common food terms")
 
 # Create Flask app
-app = Flask(
-    __name__,
-    static_folder=os.path.join(os.path.dirname(__file__), '..', 'static'),
-    template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates')
-)
+app = Flask(__name__, static_folder='static')
 
 # Enable CORS for all routes
 @app.after_request
@@ -541,6 +536,10 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
+# Create directories if they don't exist
+os.makedirs('templates', exist_ok=True)
+os.makedirs('static/css', exist_ok=True)
+os.makedirs('static/js', exist_ok=True)
 
 @app.route('/')
 def index():
@@ -602,22 +601,15 @@ def chat():
         print(f"Error in chat endpoint: {e}")
         return jsonify({'response': f'Sorry, an error occurred: {str(e)}'}), 500
 
+if __name__ == '__main__':
+    print("Starting the Nutrition Facts Guide Web Interface...")
+    print("Open your browser and navigate to http://127.0.0.1:5002")
+    print(f"API Key configured: {'Yes' if GOOGLE_API_KEY else 'No - Please check your .env file'}")
+    
     # Preload food terms 
-    # ...all your Flask routes and functions...
-
-# Preload food terms at module level (outside any function or route)
-try:
     if SPOONACULAR_API_KEY:
         preload_common_food_terms()
     else:
         print("Spoonacular API key not found - food term detection will be limited")
+    
 
-    @app.route("/")
-    def home():
-        return render_templates("chat.html")
-
-except Exception as e:
-    print("Startup error:", str(e))
-    traceback.print_exc()
-
-handler = app
