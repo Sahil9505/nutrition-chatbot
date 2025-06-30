@@ -607,3 +607,13 @@ if SPOONACULAR_API_KEY:
     preload_common_food_terms()
 else:
     print("Spoonacular API key not found - food term detection will be limited")
+
+app = Flask(__name__, static_url_path='/static')
+
+
+@app.route("/")
+def home():
+    return render_template("chat.html")
+
+handler = app 
+
