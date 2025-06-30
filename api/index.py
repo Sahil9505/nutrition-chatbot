@@ -3,6 +3,9 @@ import google.generativeai as genai
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, url_for
+import traceback
+
+app = Flask(__name__, static_url_path='/static')
 
 # Load environment variables
 load_dotenv()
@@ -603,17 +606,18 @@ def chat():
     # ...all your Flask routes and functions...
 
 # Preload food terms at module level (outside any function or route)
-if SPOONACULAR_API_KEY:
-    preload_common_food_terms()
-else:
-    print("Spoonacular API key not found - food term detection will be limited")
+try:
+    if SPOONACULAR_API_KEY:
+        preload_common_food_terms()
+    else:
+        print("Spoonacular API key not found - food term detection will be limited")
 
-app = Flask(__name__, static_url_path='/static')
+    @app.route("/")
+    def home():
+        return render_templates("chat.html")
 
+except Exception as e:
+    print("Startup error:", str(e))
+    traceback.print_exc()
 
-@app.route("/")
-def home():
-    return render_template("chat.html")
-
-handler = app 
-
+handler = app
