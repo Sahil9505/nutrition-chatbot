@@ -3,8 +3,6 @@ import google.generativeai as genai
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, url_for
-from flask import Flask
-from your_existing_module import app
 
 # Load environment variables
 load_dotenv()
@@ -612,4 +610,4 @@ if __name__ == '__main__':
     else:
         print("Spoonacular API key not found - food term detection will be limited")
     
-
+    app.run(debug=True, port=5002) 
