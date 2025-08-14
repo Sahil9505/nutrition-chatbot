@@ -601,14 +601,13 @@ def chat():
 
 if __name__ == '__main__':
     print("Starting the Nutrition Facts Guide Web Interface...")
-    port = int(os.environ.get('PORT', 5000))
-    print(f"Open your browser and navigate to http://127.0.0.1:{port}")
+    print("Open your browser and navigate to http://127.0.0.1:5002")
     print(f"API Key configured: {'Yes' if GOOGLE_API_KEY else 'No - Please check your .env file'}")
-
+    
     # Preload food terms 
     if SPOONACULAR_API_KEY:
         preload_common_food_terms()
     else:
         print("Spoonacular API key not found - food term detection will be limited")
-
-    app.run(host='0.0.0.0', port=port, debug=False)
+    
+    app.run(debug=True, port=5002) 
