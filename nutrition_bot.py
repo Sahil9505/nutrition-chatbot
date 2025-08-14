@@ -4,6 +4,9 @@ import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, url_for
 
+# Create Flask app at module level for Vercel
+app = Flask(__name__)
+
 # Load environment variables
 load_dotenv()
 
